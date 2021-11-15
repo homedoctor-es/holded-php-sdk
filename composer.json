@@ -1,0 +1,26 @@
+{
+    "name": "homedoctor-es/holded-php-sdk",
+    "description": "A PHP package to access the Holded API by a comprehensive way.",
+    "keywords": [
+        "php",
+        "homedoctor-es",
+        "holded"
+    ],
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Juan Solá",
+            "email": "juan.sola@homedoctor.es"
+        }
+    ],
+    "require": {
+        "php": ">=7.0",
+        "guzzlehttp/guzzle": "~6.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Homedoctor\\Holded\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}

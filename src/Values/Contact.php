@@ -25,16 +25,15 @@ use HomedoctorEs\Holded\Values\Abstracts\Value;
  * @property float sepaDate
  * @property int clientRecord
  * @property int supplierRecord
- * @property BillAddress billAddress
- * @property NumberingSeries numberingSeries
- * @property array shippingAddresses ShippingAddresses object Array
- * @property ContactDefaults defaults
+ * @property array billAddress see https://developers.holded.com/reference#create-contact-1 for fields
+ * @property array numberingSeries see https://developers.holded.com/reference#create-contact-1 for fields
+ * @property array shippingAddresses see https://developers.holded.com/reference#create-contact-1 for fields
+ * @property array defaults
  * @property string[] tags
  * @property string note
  * @property array contactPersons ContactContact object array
  */
 class Contact extends Value
 {
-
 
 }

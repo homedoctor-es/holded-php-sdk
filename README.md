@@ -38,6 +38,6 @@ If you haven't set the environment variable previously, remember to provide the
 key on instantiation.
 
 ```php
-$holded = new \Homedoctor\Holded\Holded($holdedApiKey);
+$holded = new \HomedoctorEs\Holded\Holded($holdedApiKey);
 $holded->contacts()->getList();
 ```

@@ -15,10 +15,9 @@
  * @author     Juan Solá
  * @license    BSD License (3-clause)
  * @copyright (c) 2021, Homedoctor Smart Medicine
-
  */
 
-namespace Homedoctor\Holded\Core;
+namespace HomedoctorEs\Holded\Core;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
@@ -26,21 +25,14 @@ use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\TransferException;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
-use Homedoctor\Holded\ConfigInterface;
-use Homedoctor\Holded\Exception\Handler;
-use Homedoctor\Holded\Exception\UnauthorizedException;
+use HomedoctorEs\Holded\ConfigInterface;
+use HomedoctorEs\Holded\Exception\Handler;
+use HomedoctorEs\Holded\Exception\UnauthorizedException;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
 abstract class Api implements ApiInterface
 {
-
-    /**
-     * The client access token obtained from the Holded API.
-     * 
-     * @var string
-     */
-    protected $cachedAccessToken;
 
     /**
      * The Config repository instance.
@@ -63,7 +55,7 @@ abstract class Api implements ApiInterface
     /**
      * {@inheritdoc}
      */
-    public function _get($url = null, $parameters = [])
+    public function _get(string $url = null, array $parameters = [])
     {
         return $this->execute('get', $url, $parameters);
     }
@@ -71,7 +63,7 @@ abstract class Api implements ApiInterface
     /**
      * {@inheritdoc}
      */
-    public function _head($url = null, array $parameters = [])
+    public function _head(string $url = null, array $parameters = [])
     {
         return $this->execute('head', $url, $parameters);
     }
@@ -79,7 +71,7 @@ abstract class Api implements ApiInterface
     /**
      * {@inheritdoc}
      */
-    public function _delete($url = null, array $parameters = [])
+    public function _delete(string $url = null, array $parameters = [])
     {
         return $this->execute('delete', $url, $parameters);
     }
@@ -87,7 +79,7 @@ abstract class Api implements ApiInterface
     /**
      * {@inheritdoc}
      */
-    public function _put($url = null, array $parameters = [])
+    public function _put(string $url = null, array $parameters = [])
     {
         return $this->execute('put', $url, $parameters);
     }
@@ -95,7 +87,7 @@ abstract class Api implements ApiInterface
     /**
      * {@inheritdoc}
      */
-    public function _patch($url = null, array $parameters = [])
+    public function _patch(string $url = null, array $parameters = [])
     {
         return $this->execute('patch', $url, $parameters);
     }
@@ -103,7 +95,7 @@ abstract class Api implements ApiInterface
     /**
      * {@inheritdoc}
      */
-    public function _post($url = null, array $parameters = [])
+    public function _post(string $url = null, array $parameters = [])
     {
         return $this->execute('post', $url, $parameters);
     }
@@ -111,7 +103,7 @@ abstract class Api implements ApiInterface
     /**
      * {@inheritdoc}
      */
-    public function _options($url = null, array $parameters = [])
+    public function _options(string $url = null, array $parameters = [])
     {
         return $this->execute('options', $url, $parameters);
     }
@@ -119,7 +111,7 @@ abstract class Api implements ApiInterface
     /**
      * {@inheritdoc}
      */
-    public function execute($httpMethod, $url, array $parameters = [])
+    public function execute(string $httpMethod, string $url = null, array $parameters = []): array
     {
         try {
             return $this->doExecute($httpMethod, $url, $parameters);
@@ -140,7 +132,7 @@ abstract class Api implements ApiInterface
      * @param array $parameters
      * @return array
      */
-    protected function doExecute($httpMethod, $url, array $parameters = []): array
+    protected function doExecute(string $httpMethod, string $url = null, array $parameters = []): array
     {
         $response = $this->getClient($this->config)->{$httpMethod}($this->composeUrl($url), $parameters);
 
@@ -149,50 +141,56 @@ abstract class Api implements ApiInterface
 
     /**
      * Composes the url of the request.
-     * 
+     *
      * @param string $url
      * @return string
      */
-    protected function composeUrl($url): string
+    protected function composeUrl(string $url = null): string
     {
+        if ($url === null) {
+            return $this->baseUri();
+        }
         return $this->baseUri() . '/' . $url;
     }
 
     /**
      * Returns an Http client instance.
      *
-     * @return \GuzzleHttp\Client
+     * @param ConfigInterface $config
+     * @return Client
      */
-    protected function getClient(ConfigInterface $config)
+    protected function getClient(ConfigInterface $config): Client
     {
         return new Client([
-            'base_uri' => $config->getBaseUri(), 'handler' => $this->createHandler($config)
+            'base_uri' => $config->getBaseUri(),
+            'handler' => $this->createHandler($config)
         ]);
     }
 
     /**
      * Create the client handler.
      *
-     * @return \GuzzleHttp\HandlerStack
+     * @param ConfigInterface $config
+     * @return HandlerStack
      */
-    protected function createHandler(ConfigInterface $config)
+    protected function createHandler(ConfigInterface $config): HandlerStack
     {
         $stack = HandlerStack::create();
         $stack->push($this->getAccessTokenMiddleware($config));
         $stack->push(Middleware::retry(function ($retries, RequestInterface $request, ResponseInterface $response = null, TransferException $exception = null) use ($config) {
-                    return $retries < $config->getRequestRetries() && ($exception instanceof ConnectException || ($response && $response->getStatusCode() >= 500));
-                }, function ($retries) {
-                    return (int) pow(2, $retries) * 1000;
-                }));
+            return $retries < $config->getRequestRetries() && ($exception instanceof ConnectException || ($response && $response->getStatusCode() >= 500));
+        }, function ($retries) {
+            return 2 ** $retries * 1000;
+        }));
         return $stack;
     }
 
     /**
-     * 
+     *
      * @param ConfigInterface $config
      * @return callable
      */
-    protected function getAccessTokenMiddleware(ConfigInterface $config)
+    protected function getAccessTokenMiddleware(ConfigInterface $config): callable
     {
         return function (callable $next) use ($config) {
             return function (RequestInterface $request, array $options) use ($next, $config) {
@@ -202,18 +200,19 @@ abstract class Api implements ApiInterface
     }
 
     /**
-     * 
+     *
      * @param RequestInterface $request
+     * @param ConfigInterface $config
      * @return RequestInterface
      */
-    protected function applyAccessToken(RequestInterface $request, ConfigInterface $config)
+    protected function applyAccessToken(RequestInterface $request, ConfigInterface $config): RequestInterface
     {
         return $request->withHeader('key', $this->getAccessToken($config));
     }
 
     /**
      * Gets the access token needed to call the api.
-     * 
+     *
      * @return string
      */
     public function getAccessToken(ConfigInterface $config)
@@ -224,23 +223,23 @@ abstract class Api implements ApiInterface
 
     /**
      * Checks whether the client token is valid or not.
-     * 
+     *
      * @param string $token
      * @return bool
      */
-    public function isAccessTokenValid($token = null)
+    public function isAccessTokenValid($token = null): bool
     {
-        return !!$token;
+        return (bool) $token;
     }
 
     /**
-     * Returns the base uri fragment for this container. 
-     * 
+     * Returns the base uri fragment for this container.
+     *
      * Do not set leading or ending slashes "/".
-     * 
+     *
      * @return string
      */
-    public function baseUri()
+    public function baseUri(): string
     {
         return '';
     }

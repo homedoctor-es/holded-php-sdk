@@ -14,20 +14,12 @@
  * @version    1.0.0
  * @author     Juan Solá
  * @license    BSD License (3-clause)
- * @copyright  (c) 2021, Jose Lorente
+ * @copyright (c) 2021, Homedoctor Smart Medicine
  */
 
 namespace HomedoctorEs\Holded\Exception;
 
-class ApiLimitExceededException extends HoldedApiException
+class ResourceNotFoundException extends HoldedApiException
 {
-
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct()
-    {
-        parent::__construct('You have reached the Holded Api rate limit!');
-    }
-
+    
 }

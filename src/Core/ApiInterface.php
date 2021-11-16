@@ -17,7 +17,7 @@
  * @copyright (c) 2021, Homedoctor Smart Medicine
  */
 
-namespace Homedoctor\Holded\Core;
+namespace HomedoctorEs\Holded\Core;
 
 interface ApiInterface
 {
@@ -25,73 +25,73 @@ interface ApiInterface
     /**
      * Send a GET request.
      *
-     * @param  string  $url
-     * @param  array  $parameters
+     * @param string|null $url
+     * @param array $parameters
      * @return array
      */
-    public function _get($url = null, $parameters = []);
+    public function _get(string $url = null, array $parameters = []);
 
     /**
      * Send a HEAD request.
      *
-     * @param  string  $url
+     * @param string|null $url
      * @param  array  $parameters
      * @return array
      */
-    public function _head($url = null, array $parameters = []);
+    public function _head(string $url = null, array $parameters = []);
 
     /**
      * Send a DELETE request.
      *
-     * @param  string  $url
+     * @param string|null $url
      * @param  array  $parameters
      * @return array
      */
-    public function _delete($url = null, array $parameters = []);
+    public function _delete(string $url = null, array $parameters = []);
 
     /**
      * Send a PUT request.
      *
-     * @param  string  $url
+     * @param string|null $url
      * @param  array  $parameters
      * @return array
      */
-    public function _put($url = null, array $parameters = []);
+    public function _put(string $url = null, array $parameters = []);
 
     /**
      * Send a PATCH request.
      *
-     * @param  string  $url
+     * @param string|null $url
      * @param  array  $parameters
      * @return array
      */
-    public function _patch($url = null, array $parameters = []);
+    public function _patch(string $url = null, array $parameters = []);
 
     /**
      * Send a POST request.
      *
-     * @param  string  $url
+     * @param string|null $url
      * @param  array  $parameters
      * @return array
      */
-    public function _post($url = null, array $parameters = []);
+    public function _post(string $url = null, array $parameters = []);
 
     /**
      * Send an OPTIONS request.
      *
-     * @param  string  $url
+     * @param string|null $url
      * @param  array  $parameters
      * @return array
      */
-    public function _options($url = null, array $parameters = []);
+    public function _options(string $url = null, array $parameters = []);
 
     /**
      * Executes the HTTP request.
      *
-     * @param  string  $httpMethod
-     * @param  string  $url
+     * @param string $httpMethod
+     * @param string $url
      * @param  array  $parameters
      * @return array
      */
-    public function execute($httpMethod, $url, array $parameters = []);
+    public function execute(string $httpMethod, string $url, array $parameters = []): array;
 }

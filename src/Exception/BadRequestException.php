@@ -17,7 +17,7 @@
  * @copyright (c) 2021, Homedoctor Smart Medicine
  */
 
-namespace Homedoctor\Holded\Exception;
+namespace HomedoctorEs\Holded\Exception;
 
 class BadRequestException extends HoldedApiException
 {

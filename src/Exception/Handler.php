@@ -17,7 +17,7 @@
  * @copyright (c) 2021, Homedoctor Smart Medicine
  */
 
-namespace Homedoctor\Holded\Exception;
+namespace HomedoctorEs\Holded\Exception;
 
 use GuzzleHttp\Exception\ClientException;
 
@@ -108,7 +108,7 @@ class Handler
             $class = 'Holded';
         }
 
-        $class = "\\Homedoctor\\Holded\\Exception\\{$class}Exception";
+        $class = "\\HomedoctorEs\\Holded\\Exception\\{$class}Exception";
 
         $instance = new $class($message, $statusCode);
 

@@ -17,8 +17,21 @@
  * @copyright (c) 2021, Homedoctor Smart Medicine
  */
 
-namespace Homedoctor\Holded;
+namespace HomedoctorEs\Holded;
 
+use HomedoctorEs\Holded\Exception\ResourceNotFoundException;
+use HomedoctorEs\Holded\Resources\Contact;
+
+
+/**
+ * Class Holded
+ *
+ * @author Juan Solá <juan.sola@homedoctor.es>
+ * 
+ * @method Contact contact
+ * 
+ *
+ */
 class Holded
 {
 
@@ -115,6 +128,20 @@ class Holded
         $this->config->setApiKey($apiKey);
 
         return $this;
+    }
+
+    /**
+     * Used to do a magic
+     * 
+     * @throws ResourceNotFoundException
+     */
+    public function __call($name, $arguments)
+    {
+        $class = 'HomedoctorEs\\Holded\\Resources\\' . ucfirst($name);
+        if (!class_exists($class)) {
+            throw new ResourceNotFoundException('The requested resource does not exists');
+        }
+        return new $class($this->getConfig());
     }
 
 }

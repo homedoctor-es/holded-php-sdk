@@ -81,7 +81,7 @@ abstract class Api implements ApiInterface
      */
     public function _put(string $url = null, array $parameters = [])
     {
-        return $this->execute('put', $url, $parameters);
+        return $this->execute('put', $url, ['body' => json_encode($parameters)]);
     }
 
     /**
@@ -89,7 +89,7 @@ abstract class Api implements ApiInterface
      */
     public function _patch(string $url = null, array $parameters = [])
     {
-        return $this->execute('patch', $url, $parameters);
+        return $this->execute('patch', $url, ['body' => json_encode($parameters)]);
     }
 
     /**
@@ -97,7 +97,7 @@ abstract class Api implements ApiInterface
      */
     public function _post(string $url = null, array $parameters = [])
     {
-        return $this->execute('post', $url, $parameters);
+        return $this->execute('post', $url, ['body' => json_encode($parameters)]);
     }
 
     /**
@@ -163,7 +163,11 @@ abstract class Api implements ApiInterface
     {
         return new Client([
             'base_uri' => $config->getBaseUri(),
-            'handler' => $this->createHandler($config)
+            'handler' => $this->createHandler($config),
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json'
+            ]
         ]);
     }
 

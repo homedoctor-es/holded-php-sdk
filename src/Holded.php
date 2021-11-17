@@ -21,6 +21,8 @@ namespace HomedoctorEs\Holded;
 
 use HomedoctorEs\Holded\Exception\ResourceNotFoundException;
 use HomedoctorEs\Holded\Resources\Contact;
+use HomedoctorEs\Holded\Resources\Document;
+use HomedoctorEs\Holded\Resources\Invoice;
 
 
 /**
@@ -29,8 +31,9 @@ use HomedoctorEs\Holded\Resources\Contact;
  * @author Juan Solá <juan.sola@homedoctor.es>
  * 
  * @method Contact contact
+ * @method Document document
+ * @method Invoice invoice
  * 
- *
  */
 class Holded
 {
@@ -69,7 +72,7 @@ class Holded
      * @param int $requestRetries
      * @return Holded
      */
-    public static function make($apiKey = null, $requestRetries = null)
+    public static function make($apiKey = null, $requestRetries = null): Holded
     {
         return new static($apiKey, $requestRetries);
     }
@@ -79,7 +82,7 @@ class Holded
      *
      * @return string
      */
-    public static function getVersion()
+    public static function getVersion(): string
     {
         return self::VERSION;
     }
@@ -141,7 +144,12 @@ class Holded
         if (!class_exists($class)) {
             throw new ResourceNotFoundException('The requested resource does not exists');
         }
-        return new $class($this->getConfig());
+        
+        $params = [$this->getConfig()];
+        if (!empty($arguments)) {
+            $params = array_merge($params, $arguments);
+        }
+        return new $class(...$params);
     }
 
 }

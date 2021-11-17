@@ -14,7 +14,7 @@
  * @version    1.0.0
  * @author     Juan Solá
  * @license    BSD License (3-clause)
- * @copyright  (c) 2021, Jose Lorente
+ * @copyright  (c) 2021, Homedoctor Smart Medicine
  */
 
 namespace HomedoctorEs\Holded\Exception;

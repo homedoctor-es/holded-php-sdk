@@ -78,7 +78,6 @@ class DocumentTest extends HoldedTestCase
         $document = $this->getDocumentData();
         $response = $this->holded->document()->create($document);
 
-        $this->assertEquals(1, $response['status']);
         $id = $response['id'];
         $contactId = $response['contactId'];
         $updated = 'Test Updated';
@@ -90,6 +89,22 @@ class DocumentTest extends HoldedTestCase
         $document = $this->holded->document()->get($id);
         $this->assertEquals($document['desc'], $updated);
 
+        $this->holded->document()->delete($id);
+        $this->holded->contact()->delete($contactId);
+    }
+
+    public function testGetDocumentPdf()
+    {
+        $document = $this->getDocumentData();
+        $response = $this->holded->document()->create($document);
+
+        $id = $response['id'];
+        $contactId = $response['contactId'];
+        
+        $pdfResponse = $this->holded->document()->pdf($id);
+        $this->assertEquals(1, $pdfResponse['status']);
+        $this->assertNotEquals(false, base64_decode($pdfResponse['data']));
+        
         $this->holded->document()->delete($id);
         $this->holded->contact()->delete($contactId);
     }

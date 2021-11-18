@@ -83,4 +83,16 @@ class Document extends Invoicing
         return $this;
     }
 
+
+    /**
+     * Returns a pdf in base64 format
+     * 
+     * @param $id
+     * @return array
+     */
+    public function pdf($id): array
+    {
+        return $this->_get($id . '/pdf');    
+    }
+
 }

@@ -95,4 +95,28 @@ class Document extends Invoicing
         return $this->_get($id . '/pdf');    
     }
 
+
+    /**
+     * Pay one specific document
+     * 
+     * @param $id
+     * @return array
+     */
+    public function pay($id): array
+    {
+        return $this->_post($id . '/pay');    
+    }
+
+
+    /**
+     * Send a specific document by email
+     * 
+     * @param $id
+     * @return array
+     */
+    public function send($id): array
+    {
+        return $this->_post($id . '/send');    
+    }
+
 }

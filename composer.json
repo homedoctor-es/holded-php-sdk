@@ -1,6 +1,6 @@
 {
     "name": "homedoctor-es/holded-php-sdk",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "A PHP package to access the Holded API by a comprehensive way.",
     "keywords": [
         "php",

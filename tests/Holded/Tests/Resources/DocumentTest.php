@@ -1,6 +1,6 @@
 <?php
 
-namespace Holded\Tests\Auth;
+namespace Holded\Tests\Resources;
 
 use Holded\Tests\HoldedTestCase;
 

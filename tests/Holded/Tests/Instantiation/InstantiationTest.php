@@ -1,6 +1,6 @@
 <?php
 
-namespace Holded\Tests\Auth;
+namespace Holded\Tests\Instantiation;
 
 use Holded\Tests\HoldedTestCase;
 use HomedoctorEs\Holded\Exception\DocumentNotAllowedException;
